@@ -2,17 +2,25 @@ import React, { useState, useRef, useCallback } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
+  useNodes,
+  useEdges,
+   updateEdge,
   useNodesState,
   useEdgesState,
+  
+  applyEdgeChanges, applyNodeChanges,
   Controls,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { DeleteOutlined } from "@ant-design/icons";
+import IdleNode from "./IdleNode";
 
 import Sidebar from "./Sidebar";
 
 import "./Flow.css";
 
+
+const nodeTypes = { idleNode: IdleNode };
 const initialNodes = [
   {
     id: "1",
@@ -37,15 +45,51 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const Flow = () => {
+
+  const edgeUpdateSuccessful = useRef(true);
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes] = useNodesState(initialNodes);
+  const [edges, setEdges] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes]
   );
+
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [setEdges]
+  );
+
+
+  const onEdgeUpdateStart = useCallback(() => {
+    edgeUpdateSuccessful.current = false;
+  }, []);
+
+  const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
+    edgeUpdateSuccessful.current = true;
+    setEdges((els) => updateEdge(oldEdge, newConnection, els));
+  }, []);
+
+  const onEdgeUpdateEnd = useCallback((_, edge) => {
+    if (!edgeUpdateSuccessful.current) {
+      setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+    }
+
+    edgeUpdateSuccessful.current = true;
+  }, []);
+
+    const onConnect = useCallback(
+    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    [setEdges]
+  );
+  const onDeleteNode = (nodeId) => {
+    const updatedNodes = nodes.filter((node) => node.id !== nodeId);
+    setNodes(updatedNodes);
+  };
+
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -70,7 +114,7 @@ console.log(event)
       });
 
       const nodeStyle =
-        type == "default"
+        type == "default" || type == "idleNode"
           ? {
             width: "127px",
             height: "49px",
@@ -104,13 +148,9 @@ console.log(event)
 
       setNodes((nds) => nds.concat(newNode));
     },
+    
     [reactFlowInstance]
   );
-
-  const onNodesClick = (nodeId) => {
-    console.log("hiiii");
-    // setNodes((nds) => nds.filter((node) => node.id !== nodeId));
-  };
 
   return (
     <div className="dndflow">
@@ -122,9 +162,16 @@ console.log(event)
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
-            onNodeClick={onNodesClick}
+            // onNodeClick={onNodesClick}
+    deleteKeyCode={["Backspace","Delete"]}
+    // onNodesDelete={}    // as needed
+    // onEdgesDelete={}   // as needed
             onConnect={onConnect}
+            onEdgeUpdate={onEdgeUpdate}
+      onEdgeUpdateStart={onEdgeUpdateStart}
+      onEdgeUpdateEnd={onEdgeUpdateEnd}
             onInit={setReactFlowInstance}
+            nodeTypes={nodeTypes}
             onDrop={onDrop}
             onDragOver={onDragOver}
             fitView
