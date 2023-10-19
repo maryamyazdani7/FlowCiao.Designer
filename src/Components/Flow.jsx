@@ -1,14 +1,15 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback,forwardRef ,useImperativeHandle } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
   useNodes,
   useEdges,
-   updateEdge,
+  updateEdge,
   useNodesState,
   useEdgesState,
-  
-  applyEdgeChanges, applyNodeChanges,
+  useStoreState,
+  applyEdgeChanges,
+  applyNodeChanges,
   Controls,
 } from "reactflow";
 import "reactflow/dist/style.css";
@@ -18,7 +19,6 @@ import IdleNode from "./IdleNode";
 import Sidebar from "./Sidebar";
 
 import "./Flow.css";
-
 
 const nodeTypes = { idleNode: IdleNode };
 const initialNodes = [
@@ -44,15 +44,24 @@ const initialNodes = [
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = () => {
-
+const Flow = forwardRef((props, ref) => {
   const edgeUpdateSuccessful = useRef(true);
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
+  useImperativeHandle(ref, () => ({
+    exportFlowAsJSON,
+  }));
 
+  const exportFlowAsJSON = () => {
+    const flowData = {
+      elements: [...nodes, ...edges],
+    };
+    const jsonFlow = JSON.stringify(flowData, null);
+    console.log('Exported JSON:', jsonFlow);
+  };
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
@@ -62,7 +71,6 @@ const Flow = () => {
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
-
 
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false;
@@ -81,7 +89,7 @@ const Flow = () => {
     edgeUpdateSuccessful.current = true;
   }, []);
 
-    const onConnect = useCallback(
+  const onConnect = useCallback(
     (connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
   );
@@ -89,7 +97,6 @@ const Flow = () => {
     const updatedNodes = nodes.filter((node) => node.id !== nodeId);
     setNodes(updatedNodes);
   };
-
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -99,7 +106,7 @@ const Flow = () => {
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
-console.log(event)
+      console.log(event);
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData("application/reactflow");
 
@@ -116,15 +123,15 @@ console.log(event)
       const nodeStyle =
         type == "default" || type == "idleNode"
           ? {
-            width: "127px",
-            height: "49px",
+              width: "127px",
+              height: "49px",
               border: "1px solid #1a192b",
               borderRadius: "9px",
               marginBottom: "10px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              cursor: "grab"
+              cursor: "grab",
             }
           : {
               width: "70px",
@@ -140,15 +147,15 @@ console.log(event)
         id: getId(),
         type,
         position,
-        sourcePosition:"right",
-        targetPosition:"left",
+        sourcePosition: "right",
+        targetPosition: "left",
         data: { label: `${type == "default" ? "Idle" : "End"}` },
         style: nodeStyle,
       };
 
       setNodes((nds) => nds.concat(newNode));
     },
-    
+
     [reactFlowInstance]
   );
 
@@ -163,13 +170,13 @@ console.log(event)
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             // onNodeClick={onNodesClick}
-    deleteKeyCode={["Backspace","Delete"]}
-    // onNodesDelete={}    // as needed
-    // onEdgesDelete={}   // as needed
+            deleteKeyCode={["Backspace", "Delete"]}
+            // onNodesDelete={}    // as needed
+            // onEdgesDelete={}   // as needed
             onConnect={onConnect}
             onEdgeUpdate={onEdgeUpdate}
-      onEdgeUpdateStart={onEdgeUpdateStart}
-      onEdgeUpdateEnd={onEdgeUpdateEnd}
+            onEdgeUpdateStart={onEdgeUpdateStart}
+            onEdgeUpdateEnd={onEdgeUpdateEnd}
             onInit={setReactFlowInstance}
             nodeTypes={nodeTypes}
             onDrop={onDrop}
@@ -182,6 +189,6 @@ console.log(event)
       </ReactFlowProvider>
     </div>
   );
-};
+});
 
 export default Flow;
