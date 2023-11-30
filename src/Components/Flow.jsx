@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback,forwardRef ,useImperativeHandle } from "react";
+import React, { useState, useRef, useCallback,forwardRef ,useImperativeHandle, useMemo } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -19,6 +19,7 @@ import IdleNode from "./IdleNode";
 import Sidebar from "./Sidebar";
 
 import "./Flow.css";
+import CustomEdge from "./CustomEdge";
 
 const nodeTypes = { idleNode: IdleNode };
 const initialNodes = [
@@ -40,6 +41,8 @@ const initialNodes = [
     },
   },
 ];
+
+const edgeTypes = { 'custom-edge': CustomEdge}
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -90,7 +93,13 @@ const Flow = forwardRef((props, ref) => {
   }, []);
 
   const onConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    
+    (connection) =>{
+      const edge = { ...connection, type: 'custom-edge' };
+      
+      setEdges((eds) => addEdge(edge, eds));
+
+    } ,
     [setEdges]
   );
   const onDeleteNode = (nodeId) => {
@@ -179,6 +188,7 @@ const Flow = forwardRef((props, ref) => {
             onEdgeUpdateEnd={onEdgeUpdateEnd}
             onInit={setReactFlowInstance}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             onDrop={onDrop}
             onDragOver={onDragOver}
             fitView
