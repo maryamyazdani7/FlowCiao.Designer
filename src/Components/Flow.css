@@ -34,14 +34,27 @@ height: 49px;
 }
 
 .dndflow .dndnode.input {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 1px solid black;
+  width: 110px;
+  min-height: 48px;
+  /* border-radius: 50%;
+  border: 1px solid black; */
+
+
+  border: 1px solid #C8C8C8;
+   border-top: 3px solid #2F6EE9;
+   border-radius:4px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
+}
+
+.react-flow__node-idleNode{
+  width: 118px !important;
+  min-height: 48px !important;
+  border: 1px solid #C8C8C8 !important;
+   border-top: 3px solid #2F6EE9 !important;
+   border-radius:4px !important;
 }
 .dndflow .dndnode.circle-node {
   width: 70px;

@@ -15,32 +15,15 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { DeleteOutlined } from "@ant-design/icons";
 import IdleNode from "./IdleNode";
+import StartNode from "./StartNode";
 
 import Sidebar from "./Sidebar";
 
 import "./Flow.css";
 import CustomEdge from "./CustomEdge";
 
-const nodeTypes = { idleNode: IdleNode };
-const initialNodes = [
-  {
-    id: "1",
-    type: "input",
-    data: { label: "Start" },
-    position: { x: 250, y: 5 },
-    sourcePosition: "right",
-    style: {
-      width: "70px",
-      height: "70px",
-      borderRadius: "50%",
-      border: "1px solid black",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      cursor: "grab",
-    },
-  },
-];
+const nodeTypes = { idleNode: IdleNode, StartNode: StartNode };
+
 
 const edgeTypes = { 'custom-edge': CustomEdge}
 
@@ -48,6 +31,33 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const Flow = forwardRef((props, ref) => {
+
+  const onAddIdleNodeFunc = () => {
+    console.log("i am here");
+  }
+const initialNodes = [
+  {
+    id: "1",
+    type: "StartNode",
+    // data: { label: "Start" },
+    position: { x: 250, y: 5 },
+    data:{
+        test: "ffff",
+        AddIdleNodeFunc: onAddIdleNodeFunc
+    }
+    // sourcePosition: "right",
+    // style: {
+    //   width: "70px",
+    //   height: "70px",
+    //   borderRadius: "50%",
+    //   border: "1px solid black",
+    //   display: "flex",
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    //   cursor: "grab",
+    // },
+  },
+];
   const edgeUpdateSuccessful = useRef(true);
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes] = useNodesState(initialNodes);
@@ -143,10 +153,11 @@ const Flow = forwardRef((props, ref) => {
               cursor: "grab",
             }
           : {
-              width: "70px",
-              height: "70px",
-              borderRadius: "50%",
-              border: "1px solid black",
+              width: "110px",
+              minHeight: "48px",
+              border: "1px solid #C8C8C8", 
+              borderTop: "3px solid #2F6EE9", 
+              borderRadius:4,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

@@ -28,16 +28,25 @@ const CustomEdge = ({
           style={{
             position: "absolute",
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            background: "#ffcc00",
+            border: "1px solid #757575",
             padding: 10,
             borderRadius: 5,
             fontSize: 12,
             fontWeight: 700
           }}
-          className="nodrag nopan"
+          // className="nodrag nopan"
         >
-            
-          {data != undefined && data.label != undefined ? data.label : "test"}
+            <button 
+            style={
+              {
+                cursor: "pointer"
+              }
+            }
+          
+          onClick={console.log("test11111")}
+          >+</button>
+            <input placeholder="your action"></input>
+          {/* {data != undefined && data.label != undefined ? data.label : "test"} */}
         </div>
       </EdgeLabelRenderer>
     </>
