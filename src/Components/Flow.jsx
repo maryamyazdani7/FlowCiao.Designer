@@ -1,4 +1,11 @@
-import React, { useState, useRef, useCallback,forwardRef ,useImperativeHandle, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+} from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -10,6 +17,7 @@ import ReactFlow, {
   useStoreState,
   applyEdgeChanges,
   applyNodeChanges,
+  useReactFlow,
   Controls,
 } from "reactflow";
 import "reactflow/dist/style.css";
@@ -24,45 +32,53 @@ import CustomEdge from "./CustomEdge";
 
 const nodeTypes = { idleNode: IdleNode, StartNode: StartNode };
 
-
-const edgeTypes = { 'custom-edge': CustomEdge}
+const edgeTypes = { "custom-edge": CustomEdge };
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const Flow = forwardRef((props, ref) => {
-
-  const onAddIdleNodeFunc = () => {
-    console.log("i am here");
-  }
-const initialNodes = [
-  {
-    id: "1",
-    type: "StartNode",
-    // data: { label: "Start" },
-    position: { x: 250, y: 5 },
-    data:{
-        test: "ffff",
-        AddIdleNodeFunc: onAddIdleNodeFunc
-    }
-    // sourcePosition: "right",
-    // style: {
-    //   width: "70px",
-    //   height: "70px",
-    //   borderRadius: "50%",
-    //   border: "1px solid black",
-    //   display: "flex",
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    //   cursor: "grab",
-    // },
-  },
-];
   const edgeUpdateSuccessful = useRef(true);
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const yPos = useRef(0);
+
+  const onAddIdleNodeFunc = (currentNode) => {
+    if (yPos != 0) {
+      yPos.current += 100;
+    }
+    console.log(currentNode)
+    const position = {
+      x: currentNode.xPos + 150,
+      y: currentNode.yPos + yPos.current,
+    };
+
+    const id = getId();
+    const newNode = {
+      id,
+      position: position,
+      type: "idleNode",
+      data: {
+        AddIdleNodeFunc: onAddIdleNodeFunc,
+      },
+      origin: [0.5, 0.0],
+    };
+
+    setNodes((nds) => nds.concat(newNode));
+    setEdges((eds) => eds.concat({ id, source: currentNode.id, target: id }));
+  };
+  const initialNodes = [
+    {
+      id: "1",
+      type: "StartNode",
+      position: { x: 250, y: 5 },
+      data: {
+        AddIdleNodeFunc: onAddIdleNodeFunc,
+      },
+    },
+  ];
+  const [nodes, setNodes] = useNodesState(initialNodes);
 
   useImperativeHandle(ref, () => ({
     exportFlowAsJSON,
@@ -73,7 +89,7 @@ const initialNodes = [
       elements: [...nodes, ...edges],
     };
     const jsonFlow = JSON.stringify(flowData, null);
-    console.log('Exported JSON:', jsonFlow);
+    console.log("Exported JSON:", jsonFlow);
   };
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -103,15 +119,14 @@ const initialNodes = [
   }, []);
 
   const onConnect = useCallback(
-    
-    (connection) =>{
-      const edge = { ...connection, type: 'custom-edge' };
-      
-      setEdges((eds) => addEdge(edge, eds));
+    (connection) => {
+      const edge = { ...connection, type: "custom-edge" };
 
-    } ,
+      setEdges((eds) => addEdge(edge, eds));
+    },
     [setEdges]
   );
+
   const onDeleteNode = (nodeId) => {
     const updatedNodes = nodes.filter((node) => node.id !== nodeId);
     setNodes(updatedNodes);
@@ -155,9 +170,9 @@ const initialNodes = [
           : {
               width: "110px",
               minHeight: "48px",
-              border: "1px solid #C8C8C8", 
-              borderTop: "3px solid #2F6EE9", 
-              borderRadius:4,
+              border: "1px solid #C8C8C8",
+              borderTop: "3px solid #2F6EE9",
+              borderRadius: 4,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -182,7 +197,7 @@ const initialNodes = [
   return (
     <div className="dndflow">
       <ReactFlowProvider>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}

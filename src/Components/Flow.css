@@ -55,6 +55,9 @@ height: 49px;
   border: 1px solid #C8C8C8 !important;
    border-top: 3px solid #2F6EE9 !important;
    border-radius:4px !important;
+   display: flex;
+   align-items: center;
+   background: #fff;
 }
 .dndflow .dndnode.circle-node {
   width: 70px;

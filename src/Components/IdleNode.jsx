@@ -173,7 +173,7 @@ const items = [
     ),
   },
 ];
-const IdleNode = () => {
+const IdleNode = (node) => {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -189,7 +189,7 @@ const IdleNode = () => {
   };
 
   const onAddIdleNodeClick = () => {
-    console.log("1111")
+    node.data.AddIdleNodeFunc(node);
   }
 
   return (
@@ -228,14 +228,14 @@ const IdleNode = () => {
             <path
               d="M5 3L5 7"
               stroke="white"
-              stroke-width="0.75"
-              stroke-linecap="round"
+              strokeWidth="0.75"
+              strokeLinecap="round"
             />
             <path
               d="M3 5L7 5"
               stroke="white"
-              stroke-width="0.75"
-              stroke-linecap="round"
+              strokeWidth="0.75"
+              strokeLinecap="round"
             />
           </svg>
         ) : (
@@ -286,12 +286,12 @@ const IdleNode = () => {
         style={{
           border: "none",
           outline: "none",
-          width: 100,
+          width: "100%",
           textAlign: "center",
         }}
         type="text"
         placeholder="Pending"
-        value={"Pending"}
+        // value={"Pending"}
       />
       <Handle
         type="target"

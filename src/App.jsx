@@ -28,8 +28,13 @@ function App() {
         },
       }}
     >
-      <Layout style={{ height: "100vh", background: "#fff" }}>
-        <Header>
+      <Layout style={{ height: "100vh", background: "#f5f5f5" }}>
+        <Header
+          style={{
+            borderBottom: "1px solid #E8E8E8",
+            background: "#FFF",
+          }}
+        >
           <Input placeholder="Workflow Name" style={{ width: 200 }} />
           <Space style={{ float: "right", flexDirection: "row-reverse" }}>
             <Button icon={<ArrowUpOutlined />} />
@@ -40,7 +45,7 @@ function App() {
             <Button icon={<PlusOutlined />} />
           </Space>
         </Header>
-        <Content style={{ padding: 35 }}>
+        <Content style={{ padding: 35, background: "#f5f5f5" }}>
           <div style={{ width: "100%", height: "100%" }}>
             <Flow ref={flowDesignerRef} />
           </div>

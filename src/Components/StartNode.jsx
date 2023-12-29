@@ -20,8 +20,7 @@ const StartNode = (node) => {
   };
 
   const onAddIdleNodeClick = () => {
-    console.log("1111", node.data.test)
-    node.data.AddIdleNodeFunc();
+    node.data.AddIdleNodeFunc(node);
   }
 
   return (
@@ -54,14 +53,14 @@ const StartNode = (node) => {
           <path
             d="M5 3L5 7"
             stroke="white"
-            stroke-width="0.75"
-            stroke-linecap="round"
+            strokeWidth="0.75"
+            strokeLinecap="round"
           />
           <path
             d="M3 5L7 5"
             stroke="white"
-            stroke-width="0.75"
-            stroke-linecap="round"
+            strokeWidth="0.75"
+            strokeLinecap="round"
           />
         </svg>
       ) : (
