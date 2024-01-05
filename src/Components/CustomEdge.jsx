@@ -30,7 +30,7 @@ const CustomEdge = ({
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
           }}
         >
-          <input className="custom-edge-input" placeholder="some action" />
+          <input className="custom-edge-input" placeholder="some action" defaultValue={"some action"}/>
         </div>
       </EdgeLabelRenderer>
     </>

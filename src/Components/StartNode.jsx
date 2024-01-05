@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react";
 import { Handle, Position } from "reactflow";
 import { Button, Dropdown, Space } from "antd";
+import dotImg from "../Assets/dot.svg"
+import plusImg from "../Assets/plus.svg"
 
 const handleStyle = { left: 10 };
 
@@ -42,37 +44,9 @@ const StartNode = (node) => {
       onClick={onAddIdleNodeClick}
     >
       {isHoverNode ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="none"
-        >
-          <circle cx="5" cy="5" r="5" fill="#2F6EE9" />
-          <path
-            d="M5 3L5 7"
-            stroke="white"
-            strokeWidth="0.75"
-            strokeLinecap="round"
-          />
-          <path
-            d="M3 5L7 5"
-            stroke="white"
-            strokeWidth="0.75"
-            strokeLinecap="round"
-          />
-        </svg>
+        <img src={plusImg}/>
       ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="4"
-          height="4"
-          viewBox="0 0 4 4"
-          fill="none"
-        >
-          <circle cx="2" cy="2" r="2" fill="#2F6EE9" />
-        </svg>
+        <img src={dotImg}/>
       )}
     </button>
       <Handle
