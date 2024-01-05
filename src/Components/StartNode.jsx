@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Handle, Position } from "reactflow";
 import { Button, Dropdown, Space } from "antd";
 import dotImg from "../Assets/dot.svg"
-import plusImg from "../Assets/plus.svg"
+import plusImg from "../Assets/circle-plus.svg"
 
 const handleStyle = { left: 10 };
 

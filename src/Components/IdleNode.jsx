@@ -4,7 +4,7 @@ import { Button, Dropdown, Space } from "antd";
 import exitActionImg from "../Assets/exit-action.svg";
 import entryActionImg from "../Assets/entry-action.svg";
 import dotImg from "../Assets/dot.svg";
-import plusImg from "../Assets/plus.svg";
+import plusImg from "../Assets/circle-plus.svg";
 import threeDotImg from "../Assets/circle-threedot.svg";
 import trashImg from "../Assets/trash.svg";
 
