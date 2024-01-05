@@ -66,7 +66,7 @@ const Flow = forwardRef((props, ref) => {
     };
 
     setNodes((nds) => nds.concat(newNode));
-    setEdges((eds) => eds.concat({ id, source: currentNode.id, target: id }));
+    setEdges((eds) => eds.concat({ id, source: currentNode.id, target: id, type: "custom-edge" }));
   };
   const initialNodes = [
     {

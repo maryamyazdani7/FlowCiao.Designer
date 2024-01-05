@@ -1,5 +1,5 @@
-import React from "react"
-import { getBezierPath, EdgeLabelRenderer, BaseEdge } from "reactflow"
+import React from "react";
+import { getBezierPath, EdgeLabelRenderer, BaseEdge } from "reactflow";
 
 const CustomEdge = ({
   id,
@@ -9,7 +9,7 @@ const CustomEdge = ({
   targetY,
   sourcePosition,
   targetPosition,
-  data
+  data,
 }) => {
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
@@ -17,40 +17,24 @@ const CustomEdge = ({
     sourcePosition,
     targetX,
     targetY,
-    targetPosition
-  })
+    targetPosition,
+  });
 
   return (
     <>
       <BaseEdge id={id} path={edgePath} />
       <EdgeLabelRenderer>
         <div
+          className="custom-edge-container"
           style={{
-            position: "absolute",
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            border: "1px solid #757575",
-            padding: 10,
-            borderRadius: 5,
-            fontSize: 12,
-            fontWeight: 700
           }}
-          // className="nodrag nopan"
         >
-            <button 
-            style={
-              {
-                cursor: "pointer"
-              }
-            }
-          
-          onClick={console.log("test11111")}
-          >+</button>
-            <input placeholder="your action"></input>
-          {/* {data != undefined && data.label != undefined ? data.label : "test"} */}
+          <input className="custom-edge-input" placeholder="some action" />
         </div>
       </EdgeLabelRenderer>
     </>
-  )
-}
+  );
+};
 
-export default CustomEdge
+export default CustomEdge;
