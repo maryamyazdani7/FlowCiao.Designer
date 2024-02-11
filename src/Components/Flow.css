@@ -50,15 +50,24 @@ display: none;
   align-items: center;
   cursor: grab;
 }
-
+.react-flow__node.selected {
+  border: unset !important;
+  box-shadow: 0px 1px 7px 0px #757575;
+}
 .react-flow__node-idleNode {
   width: 118px !important;
   min-height: 48px !important;
-  border: 1px solid #c8c8c8 !important;
-  border-top: 3px solid #2f6ee9 !important;
-  border-radius: 4px !important;
   display: flex;
   align-items: center;
+  background-color: transparent;
+}
+.react-flow__node-idleNode > div{
+  border: 1px solid !important;
+  border-left-color:  #c8c8c8  !important;
+  border-right-color:  #c8c8c8  !important;
+  border-bottom-color:  #c8c8c8  !important;
+  border-top: 3px solid #2f6ee9 !important;
+  border-radius: 4px !important;
   background: #fff;
 }
 .dndflow .dndnode.circle-node {

@@ -4,7 +4,6 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
-  useMemo,
 } from "react";
 import ReactFlow, {
   ReactFlowProvider,
@@ -48,7 +47,6 @@ const Flow = forwardRef((props, ref) => {
     if (yPos != 0) {
       yPos.current += 100;
     }
-    console.log(currentNode)
     const position = {
       x: currentNode.xPos + 150,
       y: currentNode.yPos + yPos.current,
@@ -60,13 +58,13 @@ const Flow = forwardRef((props, ref) => {
       position: position,
       type: "idleNode",
       data: {
-        AddIdleNodeFunc: onAddIdleNodeFunc,
+        AddIdleNodeFunc: onAddIdleNodeFunc
       },
       origin: [0.5, 0.0],
     };
-
     setNodes((nds) => nds.concat(newNode));
     setEdges((eds) => eds.concat({ id, source: currentNode.id, target: id, type: "custom-edge" }));
+   
   };
   const initialNodes = [
     {
@@ -74,7 +72,7 @@ const Flow = forwardRef((props, ref) => {
       type: "StartNode",
       position: { x: 250, y: 5 },
       data: {
-        AddIdleNodeFunc: onAddIdleNodeFunc,
+        AddIdleNodeFunc: onAddIdleNodeFunc
       },
     },
   ];

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useContext } from "react";
 import { Handle, Position } from "reactflow";
 import { Button, Dropdown, Space } from "antd";
 import exitActionImg from "../Assets/exit-action.svg";
@@ -7,10 +7,12 @@ import dotImg from "../Assets/dot.svg";
 import plusImg from "../Assets/circle-plus.svg";
 import threeDotImg from "../Assets/circle-threedot.svg";
 import trashImg from "../Assets/trash.svg";
+import ThemeContext from "../Store/ThemeContext";
 
 const handleStyle = { left: 10 };
 
 const IdleNode = (node) => {
+  const themeCtx = useContext(ThemeContext);
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -76,7 +78,6 @@ const IdleNode = (node) => {
   ];
 
   const chooseActionHandler = ( {key}) => {
-    console.log("111", key);
     if (key == "entryAction") {
       setIsEntryActionSelected(true);
     } else if (key == "exitAction") {
@@ -89,12 +90,16 @@ const IdleNode = (node) => {
   const removeExitActionHandler = () => {
     setIsExitActionSelected(false);
   };
-
   return (
     <div
-      style={{ width: "100%" }}
+      style={{ width: "100%"}}
       onMouseEnter={onIdleNodeHoverFunc}
       onMouseLeave={onIdleNodeLoseHoverFunc}
+      ref={el => {
+        if (el) {
+          el.style.setProperty('border-top-color', themeCtx.borderColor, 'important');
+        }
+      }}
     >
       <button
         id="addIdleNode"
@@ -126,7 +131,7 @@ const IdleNode = (node) => {
             border: "none",
             outline: "none",
             position: "absolute",
-            top: 0,
+            top: 3,
             right: 0,
             cursor: "pointer",
           }}
