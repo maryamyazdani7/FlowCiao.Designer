@@ -4,6 +4,7 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
+  useEffect
 } from "react";
 import ReactFlow, {
   ReactFlowProvider,
@@ -191,6 +192,15 @@ const Flow = forwardRef((props, ref) => {
 
     [reactFlowInstance]
   );
+
+  useEffect(() => {
+    if(props.resetFlowCalled){
+      setNodes(initialNodes);
+      setEdges([]);
+      yPos.current = 0
+      props.onResetFlowClick(false);
+    }
+  },[props.resetFlowCalled])
 
   return (
     <div className="dndflow">

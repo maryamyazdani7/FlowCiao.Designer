@@ -43,6 +43,11 @@ function App() {
       );
     }
   };
+  const [resetFlow, setResetFlow] = useState(false);
+  const resetFlowClick = (isCleared = true) =>{
+      setResetFlow(isCleared)
+  }
+
   return (
     <ThemeContext.Provider
       value={{
@@ -75,12 +80,12 @@ function App() {
                 onClick={handleExportFlowAsJSON}
               />
               <Button icon={<img src={importImg} />} />
-              <Button icon={<img src={plusImg} />} />
+              <Button icon={<img src={plusImg} />} onClick={resetFlowClick}/>
             </Space>
           </Header>
           <Content className="main-content">
             <div>
-              <Flow ref={flowDesignerRef} />
+              <Flow ref={flowDesignerRef} resetFlowCalled={resetFlow} onResetFlowClick={resetFlowClick}/>
             </div>
           </Content>
         </Layout>
