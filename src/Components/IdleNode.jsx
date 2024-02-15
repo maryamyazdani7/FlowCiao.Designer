@@ -9,8 +9,6 @@ import threeDotImg from "../Assets/circle-threedot.svg";
 import trashImg from "../Assets/trash.svg";
 import ThemeContext from "../Store/ThemeContext";
 
-const handleStyle = { left: 10 };
-
 const IdleNode = (node) => {
   const themeCtx = useContext(ThemeContext);
   const onChange = useCallback((evt) => {
@@ -39,14 +37,7 @@ const IdleNode = (node) => {
       label: (
         <span>
           <img src={entryActionImg} />
-          <span
-            style={{
-              marginLeft: 4,
-              color: "#393939",
-              fontSize: "12px",
-              fontWeight: 500,
-            }}
-          >
+          <span className="node-action-btn">
             On Entry
           </span>
         </span>
@@ -61,14 +52,7 @@ const IdleNode = (node) => {
       label: (
         <span>
           <img src={exitActionImg} />
-          <span
-            style={{
-              marginLeft: 4,
-              color: "#393939",
-              fontSize: "12px",
-              fontWeight: 500,
-            }}
-          >
+          <span className="node-action-btn">
             On Exit
           </span>
         </span>
@@ -92,7 +76,6 @@ const IdleNode = (node) => {
   };
   return (
     <div
-      style={{ width: "100%"}}
       onMouseEnter={onIdleNodeHoverFunc}
       onMouseLeave={onIdleNodeLoseHoverFunc}
       ref={el => {
@@ -103,17 +86,7 @@ const IdleNode = (node) => {
     >
       <button
         id="addIdleNode"
-        style={{
-          width: 4,
-          height: 4,
-          position: "absolute",
-          right: "-10px",
-          top: "30%",
-          background: "transparent",
-          border: "none",
-          outline: "none",
-          cursor: "pointer",
-        }}
+        className="add-node-btn"
         onClick={onAddIdleNodeClick}
       >
         {isHoverNode ? <img src={plusImg} /> : <img src={dotImg} />}
@@ -126,81 +99,34 @@ const IdleNode = (node) => {
         placement="bottomRight"
       >
         <button
-          style={{
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            position: "absolute",
-            top: 3,
-            right: 0,
-            cursor: "pointer",
-          }}
+        className="add-node-function-btn"
         >
           <img src={threeDotImg} />
         </button>
       </Dropdown>
       <input
-        style={{
-          border: "none",
-          outline: "none",
-          width: "100%",
-          textAlign: "center",
-          margin: "14px 0",
-        }}
+      className="node-name"
         type="text"
         placeholder="Pending"
          defaultValue={"Pending"}
       />
       {(isEntryActionSelected || isExitActionSelected) && (
-        <div style={{ width: "100%", borderTop: "1px dashed #CACACA" }}>
-          <span
-            style={{
-              color: "#9C9C9C",
-              fontWeight: "500",
-              fontSize: "8px",
-              paddingLeft: "8px",
-            }}
-          >
+        <div className="func-container">
+          <span className="func-container-title">
             Actvities
           </span>
           {isEntryActionSelected && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                padding: "4px 8px 8px",
-              }}
-            >
+            <div className="node-func">
               <img
                 src={entryActionImg}
-                style={{
-                  filter:
-                    "invert(39%) sepia(55%) saturate(4651%) hue-rotate(210deg) brightness(94%) contrast(94%)",
-                }}
+                className="image-svg-2F6EE9-color"
               />
-              <input
-                style={{
-                  color: "#393939",
-                  fontsize: "10px",
-                  fontweight: "400",
-                  flex: 1,
-                  width: " 100%",
-                  border: "unset",
-                  outline: "unset",
-                  textAlign: "center",
-                  margin: "0 4px"
-                }}
+              <input className="action-func-name"
                 placeholder="Custom Act"
                 defaultValue={"Custom Act"}
               />
               <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  outline: "none",
-                  padding: 0,
-                }}
+                className="func-action-remove-btn"
                 onClick={removeEntryActionHandler}
               >
                 <img src={trashImg} width={8} />
@@ -209,43 +135,18 @@ const IdleNode = (node) => {
           )}
 
           {isExitActionSelected && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                padding: "4px 8px 8px",
-              }}
-            >
+            <div className="node-func">
               <img
                 src={exitActionImg}
-                style={{
-                  filter:
-                    "invert(39%) sepia(55%) saturate(4651%) hue-rotate(210deg) brightness(94%) contrast(94%)",
-                }}
+                className="image-svg-2F6EE9-color"
               />
               <input
-                style={{
-                  color: "#393939",
-                  fontsize: "10px",
-                  fontweight: "400",
-                  flex: 1,
-                  width: " 100%",
-                  border: "unset",
-                  outline: "unset",
-                  textAlign: "center",
-                  margin: "0 4px"
-                }}
+                className="action-func-name"
                 placeholder="Custom Act"
                 defaultValue={"Custom Act"}
               />
               <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  outline: "none",
-                  padding: 0,
-                }}
+                className="func-action-remove-btn"
                 onClick={removeExitActionHandler}
               >
                 <img src={trashImg} width={8} />
@@ -258,13 +159,13 @@ const IdleNode = (node) => {
         type="target"
         isConnectable={true}
         position={Position.Left}
-        style={{ background: "transparent", border: "none" }}
+        className="node-handle"
         id="a1"
       />
       <Handle
         type="source"
         isConnectable={true}
-        style={{ background: "transparent", border: "none" }}
+        className="node-handle"
         position={Position.Right}
         id="a2"
       />

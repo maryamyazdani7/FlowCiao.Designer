@@ -4,8 +4,6 @@ import { Button, Dropdown, Space } from "antd";
 import dotImg from "../Assets/dot.svg"
 import plusImg from "../Assets/circle-plus.svg"
 
-const handleStyle = { left: 10 };
-
 const StartNode = (node) => {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
@@ -26,21 +24,12 @@ const StartNode = (node) => {
   }
 
   return (
-    <div style={{borderRadius: "50%",border: "2px solid #3C3C3C", width: 23, height: 23}} onMouseEnter={onNodeHoverFunc}
+    <div className="start-node" onMouseEnter={onNodeHoverFunc}
     onMouseLeave={onNodeLoseHoverFunc}
   >
     <button
       id="addIdleNode"
-      style={{
-        width: 4,
-        height: 4,
-        position: "absolute",
-        right: "-10px",
-        background: "transparent",
-        border: "none",
-        outline: "none",
-        cursor: "pointer"
-      }}
+      className="add-node-btn"
       onClick={onAddIdleNodeClick}
     >
       {isHoverNode ? (
@@ -52,7 +41,7 @@ const StartNode = (node) => {
       <Handle
         type="source"
         isConnectable={true}
-        style={{ background: "transparent", border: "none" }}
+        className="node-handle"
         position={Position.Right}
         id="s1"
       />
