@@ -43,16 +43,25 @@ const Flow = forwardRef((props, ref) => {
   const [edges, setEdges] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const yPos = useRef(0);
+  const yPos2 = useRef([{ x: 0, y: 0 }]);
+
+  const findFirstEmptyPosition = (xCoordinate, yCoordinate) => {
+    const positionsAtX = yPos2.current.filter((position) => position.x === xCoordinate);
+    let expectedY = yCoordinate
+    for (let i = 0; i < positionsAtX.length; i++) {
+      if (positionsAtX.find(pos => pos.y === expectedY) === undefined) {
+        return { x: xCoordinate, y: expectedY };
+      }
+      expectedY += 150;
+    }
+    return { x: xCoordinate, y: expectedY };
+  };
 
   const onAddIdleNodeFunc = (currentNode) => {
-    if (yPos != 0) {
-      yPos.current += 100;
-    }
-    const position = {
-      x: currentNode.xPos + 150,
-      y: currentNode.yPos + yPos.current,
-    };
-
+    
+    var newNodeXPos = currentNode.xPos + 250;
+    const position = findFirstEmptyPosition(newNodeXPos, currentNode.yPos);
+    yPos2.current.push(position);
     const id = getId();
     const newNode = {
       id,
@@ -67,11 +76,17 @@ const Flow = forwardRef((props, ref) => {
     setEdges((eds) => eds.concat({ id, source: currentNode.id, target: id, type: "custom-edge" }));
    
   };
+  const onNodesDelete = (node) => {
+const index = yPos2.current.indexOf(node[0].position);
+if (index > -1) { 
+  yPos2.current.splice(index, 1); 
+}
+  }
   const initialNodes = [
     {
       id: "1",
       type: "StartNode",
-      position: { x: 250, y: 5 },
+      position: { x: 0, y: 0 },
       data: {
         AddIdleNodeFunc: onAddIdleNodeFunc
       },
@@ -214,7 +229,7 @@ const Flow = forwardRef((props, ref) => {
             onEdgesChange={onEdgesChange}
             // onNodeClick={onNodesClick}
             deleteKeyCode={["Backspace", "Delete"]}
-            // onNodesDelete={}    // as needed
+            onNodesDelete={onNodesDelete}    // as needed
             // onEdgesDelete={}   // as needed
             onConnect={onConnect}
             onEdgeUpdate={onEdgeUpdate}
