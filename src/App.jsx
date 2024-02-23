@@ -24,6 +24,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 function App() {
   const flowDesignerRef = useRef();
+  const [workflowName, setWorkflowName] = useState("");
 
   const handleExportFlowAsJSON = () => {
     if (flowDesignerRef.current) {
@@ -45,7 +46,11 @@ function App() {
   };
   const [resetFlow, setResetFlow] = useState(false);
   const resetFlowClick = (isCleared = true) =>{
+    setWorkflowName("")
       setResetFlow(isCleared)
+  }
+  const workflowNameOnChange = (event) => {
+    setWorkflowName(event.target.value);
   }
 
   return (
@@ -65,7 +70,7 @@ function App() {
       >
         <Layout className="main-layout">
           <Header className="main-header">
-            <Input placeholder="Workflow Name" id="workflow-name" />
+            <Input placeholder="Workflow Name" id="workflow-name" value={workflowName} onChange={workflowNameOnChange}/>
             <Space className="header-botton-container">
               <Button
                 style={{ background: "#0047FF" }}

@@ -44,11 +44,10 @@ const Flow = forwardRef((props, ref) => {
   const reactFlowWrapper = useRef(null);
   const [edges, setEdges] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-  const yPos = useRef(0);
-  const yPos2 = useRef([{ x: 0, y: 0 }]);
+  const nodesPosition = useRef([{ x: 0, y: 0 }]);
 
   const findFirstEmptyPosition = (xCoordinate, yCoordinate) => {
-    const positionsAtX = yPos2.current.filter(
+    const positionsAtX = nodesPosition.current.filter(
       (position) => position.x === xCoordinate
     );
     let expectedY = yCoordinate;
@@ -64,7 +63,7 @@ const Flow = forwardRef((props, ref) => {
   const onAddIdleNodeFunc = (currentNode) => {
     var newNodeXPos = currentNode.xPos + 250;
     const position = findFirstEmptyPosition(newNodeXPos, currentNode.yPos);
-    yPos2.current.push(position);
+    nodesPosition.current.push(position);
     const id = getId();
     const newNode = {
       id,
@@ -86,9 +85,9 @@ const Flow = forwardRef((props, ref) => {
     );
   };
   const onNodesDelete = (node) => {
-    const index = yPos2.current.indexOf(node[0].position);
+    const index = nodesPosition.current.indexOf(node[0].position);
     if (index > -1) {
-      yPos2.current.splice(index, 1);
+      nodesPosition.current.splice(index, 1);
     }
   };
   const initialNodes = [
@@ -221,7 +220,7 @@ const Flow = forwardRef((props, ref) => {
     if (props.resetFlowCalled) {
       setNodes(initialNodes);
       setEdges([]);
-      yPos.current = 0;
+      nodesPosition.current = [{ x: 0, y: 0 }];
       props.onResetFlowClick(false);
     }
   }, [props.resetFlowCalled]);
