@@ -4,7 +4,7 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
-  useEffect
+  useEffect,
 } from "react";
 import ReactFlow, {
   ReactFlowProvider,
@@ -30,6 +30,8 @@ import Sidebar from "./Sidebar";
 import "./Flow.css";
 import CustomEdge from "./CustomEdge";
 
+import CustomConnectionLine from "./CustomConnectionLine";
+
 const nodeTypes = { idleNode: IdleNode, StartNode: StartNode };
 
 const edgeTypes = { "custom-edge": CustomEdge };
@@ -46,10 +48,12 @@ const Flow = forwardRef((props, ref) => {
   const yPos2 = useRef([{ x: 0, y: 0 }]);
 
   const findFirstEmptyPosition = (xCoordinate, yCoordinate) => {
-    const positionsAtX = yPos2.current.filter((position) => position.x === xCoordinate);
-    let expectedY = yCoordinate
+    const positionsAtX = yPos2.current.filter(
+      (position) => position.x === xCoordinate
+    );
+    let expectedY = yCoordinate;
     for (let i = 0; i < positionsAtX.length; i++) {
-      if (positionsAtX.find(pos => pos.y === expectedY) === undefined) {
+      if (positionsAtX.find((pos) => pos.y === expectedY) === undefined) {
         return { x: xCoordinate, y: expectedY };
       }
       expectedY += 150;
@@ -58,7 +62,6 @@ const Flow = forwardRef((props, ref) => {
   };
 
   const onAddIdleNodeFunc = (currentNode) => {
-    
     var newNodeXPos = currentNode.xPos + 250;
     const position = findFirstEmptyPosition(newNodeXPos, currentNode.yPos);
     yPos2.current.push(position);
@@ -68,27 +71,33 @@ const Flow = forwardRef((props, ref) => {
       position: position,
       type: "idleNode",
       data: {
-        AddIdleNodeFunc: onAddIdleNodeFunc
+        AddIdleNodeFunc: onAddIdleNodeFunc,
       },
       origin: [0.5, 0.0],
     };
     setNodes((nds) => nds.concat(newNode));
-    setEdges((eds) => eds.concat({ id, source: currentNode.id, target: id, type: "custom-edge" }));
-   
+    setEdges((eds) =>
+      eds.concat({
+        id,
+        source: currentNode.id,
+        target: id,
+        type: "custom-edge",
+      })
+    );
   };
   const onNodesDelete = (node) => {
-const index = yPos2.current.indexOf(node[0].position);
-if (index > -1) { 
-  yPos2.current.splice(index, 1); 
-}
-  }
+    const index = yPos2.current.indexOf(node[0].position);
+    if (index > -1) {
+      yPos2.current.splice(index, 1);
+    }
+  };
   const initialNodes = [
     {
       id: "1",
       type: "StartNode",
       position: { x: 0, y: 0 },
       data: {
-        AddIdleNodeFunc: onAddIdleNodeFunc
+        AddIdleNodeFunc: onAddIdleNodeFunc,
       },
     },
   ];
@@ -209,13 +218,18 @@ if (index > -1) {
   );
 
   useEffect(() => {
-    if(props.resetFlowCalled){
+    if (props.resetFlowCalled) {
       setNodes(initialNodes);
       setEdges([]);
-      yPos.current = 0
+      yPos.current = 0;
       props.onResetFlowClick(false);
     }
-  },[props.resetFlowCalled])
+  }, [props.resetFlowCalled]);
+
+  const connectionLineStyle = {
+    strokeWidth: 1.5,
+    stroke: "#b1b1b7",
+  };
 
   return (
     <div className="dndflow">
@@ -229,7 +243,7 @@ if (index > -1) {
             onEdgesChange={onEdgesChange}
             // onNodeClick={onNodesClick}
             deleteKeyCode={["Backspace", "Delete"]}
-            onNodesDelete={onNodesDelete}    // as needed
+            onNodesDelete={onNodesDelete} // as needed
             // onEdgesDelete={}   // as needed
             onConnect={onConnect}
             onEdgeUpdate={onEdgeUpdate}
@@ -238,8 +252,10 @@ if (index > -1) {
             onInit={setReactFlowInstance}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
+            // onDrop={onDrop}
+            // onDragOver={onDragOver}
+            connectionLineComponent={CustomConnectionLine}
+            connectionLineStyle={connectionLineStyle}
             fitView
           >
             <Controls />

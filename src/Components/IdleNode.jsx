@@ -1,5 +1,5 @@
 import { useCallback, useState, useContext } from "react";
-import { Handle, Position } from "reactflow";
+import { Handle, Position, useStore} from "reactflow";
 import { Button, Dropdown, Space } from "antd";
 import exitActionImg from "../Assets/exit-action.svg";
 import entryActionImg from "../Assets/entry-action.svg";
@@ -10,6 +10,7 @@ import trashImg from "../Assets/trash.svg";
 import ThemeContext from "../Store/ThemeContext";
 
 const IdleNode = (node) => {
+
   const themeCtx = useContext(ThemeContext);
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
@@ -84,6 +85,54 @@ const IdleNode = (node) => {
         }
       }}
     >
+      <Handle
+        type="target"
+        isConnectable={true}
+        position={Position.Left}
+        className="node-handle"
+      />
+      <Handle
+        type="target"
+        isConnectable={true}
+        position={Position.Right}
+        className="node-handle"
+      />
+      <Handle
+        type="target"
+        isConnectable={true}
+        position={Position.Top}
+        className="node-handle"
+      />
+      <Handle
+        type="target"
+        isConnectable={true}
+        position={Position.Bottom}
+        className="node-handle"
+      />
+      <Handle
+        type="source"
+        isConnectable={true}
+        className="node-handle"
+        position={Position.Right}
+      />
+      <Handle
+        type="source"
+        isConnectable={true}
+        className="node-handle"
+        position={Position.Left}
+      />
+      <Handle
+        type="source"
+        isConnectable={true}
+        className="node-handle"
+        position={Position.Top}
+      />
+      <Handle
+        type="source"
+        isConnectable={true}
+        className="node-handle"
+        position={Position.Bottom}
+      />
       <button
         id="addIdleNode"
         className="add-node-btn"
@@ -155,20 +204,6 @@ const IdleNode = (node) => {
           )}
         </div>
       )}
-      <Handle
-        type="target"
-        isConnectable={true}
-        position={Position.Left}
-        className="node-handle"
-        id="a1"
-      />
-      <Handle
-        type="source"
-        isConnectable={true}
-        className="node-handle"
-        position={Position.Right}
-        id="a2"
-      />
     </div>
   );
 };
